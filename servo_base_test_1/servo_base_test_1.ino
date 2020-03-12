@@ -20,16 +20,16 @@ void setup() {
   //rotation smoothing test init
   rotStart = 0;
   rotEnd = 180;
-  rotRate = 2; //1 degree per 100 ms
+  rotRate = 4; //1 degree per 100 ms
 
   delay(1000);
-  servo_base.write(90);
+  //servo_base.write(90);
   //delay(5000);
   servo_shoulder.write(90);
   //delay(5000);
-  servo_arm1.write(90);
+  //servo_arm1.write(90);
   //delay(5000);
-  servo_arm2.write(90);
+  //servo_arm2.write(90);
   //delay(10000);
   /*
   servo_base.write(0);
@@ -78,17 +78,18 @@ void setup() {
 void loop() {
 
   //rotation smoothing test 
+  /*
    for(counter = rotStart; counter < rotEnd; counter += rotRate)
   {
     //increment servo by 1 degree
     servo_arm1.write(fabs(counter));
     //servo_shoulder.write(fabs(counter));
-    //servo_base.write(fabs(counter));
+    servo_base.write(fabs(counter));
     delay(100);
   }
   //flips initial and final rotation bounds
   int temp = rotStart;
   rotStart = rotEnd * -1;
   rotEnd = temp;
-  
+  */
 }
