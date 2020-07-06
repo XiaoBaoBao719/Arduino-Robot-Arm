@@ -30,7 +30,7 @@ void setup() {
   servo_shoulder.attach(9);
   servo_arm1.attach(10);
   servo_arm2.attach(11);
-  servo_arm3.attach(12);
+  servo_arm3.attach(12); //MICROSERVO PIN
   end_effector.attach(13);
   delay(1000);
 
@@ -39,11 +39,11 @@ void setup() {
   Serial.println("Beginning program-----");
   delay(5000);
 
-  servo_base.write(0);
+  servo_base.write(90);
   servo_shoulder.write(90);
   servo_arm1.write(90);
   servo_arm2.write(90);
-  servo_arm3.write(90);
+  servo_arm3.write(90);  //MICROSERVO WRITE
   end_effector.write(90);
   delay(1000);
   Serial.println("Joints Initialized-----");
@@ -84,7 +84,7 @@ void loop() {
           jointStrThetas[ctr] = temp;
           ctr++;
         }
-        Serial.println(temp);
+        //Serial.println(temp);
         j = k + 1;
       }
       //base = readIn.substring(0, 4);
@@ -92,14 +92,17 @@ void loop() {
       //servo_base.write(jointThetas[0]);
     }
 
-    //debug/outputs array values via loop
+    Serial.println(readIn);
+    //writes input string values to array
     for (int l = 0; l < 6; l++) {
-      Serial.print("printing");
-      Serial.println(jointStrThetas[l]);
+      //Serial.print("printing");
+      //Serial.println(jointStrThetas[l]);
       jointThetas[l] = jointStrThetas[l].toInt();
+      //Serial.println(jointThetas[l]);
     }
 
-    readIn = "";
+    //resets counter 
+    ctr = 0; 
   }
   //check to see if joint angles are not at target orientation
   //rotate servos and update master array of thetas
@@ -111,12 +114,15 @@ void loop() {
       index++;
     }
   }
+  //reset input reading variables and Serial buffer
+  readIn = "";
+  Serial.flush();
 }
 
 bool areJointsAtTarget(int joints[]) {
   for (int k = 0; k < sizeof(joints) / sizeof(joints[0]); k++) {
     if (joints[k] != masterThetas[k]) {
-      Serial.println("joints not at target");
+      Serial.println("Joints not at target---");
       return false;
     }
   }
@@ -126,9 +132,10 @@ bool areJointsAtTarget(int joints[]) {
 }
 
 void rotateServos(int joints[]) {
-  Serial.println("ROTATING JOINTS");
+  Serial.println("Aligning Joints---");
   //if (sizeof(joints) / sizeof(joints[0]) == NUMJOINTS) {
-    Serial.println("TEST");
+    //Serial.println("TEST");
+    delay(1000);
     servo_base.write(joints[0]);
     servo_shoulder.write(joints[1]);
     servo_arm1.write(joints[2]);
