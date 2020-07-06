@@ -21,17 +21,17 @@ bool flag;
 void setup() {
   // put your setup code here, to run once:
   int index = 0;
-    for(int theta : jointThetas){
-      masterThetas[index] = theta;
-      index++;
-    }
+  for (int theta : jointThetas) {
+    masterThetas[index] = theta;
+    index++;
+  }
   // Initialize Servos to pins
-  servo_base.attach(2);
-  servo_shoulder.attach(3);
-  servo_arm1.attach(4);
-  servo_arm2.attach(5);
-  servo_arm3.attach(6);
-  end_effector.attach(7);
+  servo_base.attach(8);
+  servo_shoulder.attach(9);
+  servo_arm1.attach(10);
+  servo_arm2.attach(11);
+  servo_arm3.attach(12);
+  end_effector.attach(13);
   delay(1000);
 
   Serial.begin(9600);
@@ -39,7 +39,7 @@ void setup() {
   Serial.println("Beginning program-----");
   delay(5000);
 
-  servo_base.write(90);
+  servo_base.write(0);
   servo_shoulder.write(90);
   servo_arm1.write(90);
   servo_arm2.write(90);
@@ -106,7 +106,7 @@ void loop() {
   if (!areJointsAtTarget(jointThetas)) {
     rotateServos(jointThetas);
     int index = 0;
-    for(int theta : jointThetas){
+    for (int theta : jointThetas) {
       masterThetas[index] = theta;
       index++;
     }
@@ -114,21 +114,27 @@ void loop() {
 }
 
 bool areJointsAtTarget(int joints[]) {
-  for(int k = 0; k < sizeof(joints)/sizeof(joints[0]); k++){
-    if(joints[k] != masterThetas[k]){
+  for (int k = 0; k < sizeof(joints) / sizeof(joints[0]); k++) {
+    if (joints[k] != masterThetas[k]) {
+      Serial.println("joints not at target");
       return false;
     }
   }
+  //Serial.println("joints at target");
   return true;
+
 }
 
 void rotateServos(int joints[]) {
-  if (sizeof(joints) / sizeof(joints[0]) == NUMJOINTS) {
+  Serial.println("ROTATING JOINTS");
+  //if (sizeof(joints) / sizeof(joints[0]) == NUMJOINTS) {
+    Serial.println("TEST");
     servo_base.write(joints[0]);
     servo_shoulder.write(joints[1]);
     servo_arm1.write(joints[2]);
     servo_arm2.write(joints[3]);
     servo_arm3.write(joints[4]);
     end_effector.write(joints[5]);
-  }
+    delay(500);
+  //}
 }
