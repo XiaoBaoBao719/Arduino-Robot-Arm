@@ -11,12 +11,20 @@ Servo servo_arm3;
 Servo end_effector;
 
 String readIn, base, shoulder, joint1, joint2, joint3, effector;
-String jointStrThetas[6] {"0", "0", "0", "0", "0", "0"};
-int jointThetas[6] = {0, 0, 0, 0, 0, 0};
+const int NUMJOINTS = 6;
+
+String jointStrThetas[NUMJOINTS] {"0", "0", "0", "0", "0", "0"};
+int jointThetas[NUMJOINTS] = {0, 0, 0, 0, 0, 0};
+int masterThetas[NUMJOINTS];
 bool flag;
 
 void setup() {
   // put your setup code here, to run once:
+  int index = 0;
+    for(int theta : jointThetas){
+      masterThetas[index] = theta;
+      index++;
+    }
   // Initialize Servos to pins
   servo_base.attach(2);
   servo_shoulder.attach(3);
@@ -88,8 +96,39 @@ void loop() {
     for (int l = 0; l < 6; l++) {
       Serial.print("printing");
       Serial.println(jointStrThetas[l]);
+      jointThetas[l] = jointStrThetas[l].toInt();
     }
 
     readIn = "";
+  }
+  //check to see if joint angles are not at target orientation
+  //rotate servos and update master array of thetas
+  if (!areJointsAtTarget(jointThetas)) {
+    rotateServos(jointThetas);
+    int index = 0;
+    for(int theta : jointThetas){
+      masterThetas[index] = theta;
+      index++;
+    }
+  }
+}
+
+bool areJointsAtTarget(int joints[]) {
+  for(int k = 0; k < sizeof(joints)/sizeof(joints[0]); k++){
+    if(joints[k] != masterThetas[k]){
+      return false;
+    }
+  }
+  return true;
+}
+
+void rotateServos(int joints[]) {
+  if (sizeof(joints) / sizeof(joints[0]) == NUMJOINTS) {
+    servo_base.write(joints[0]);
+    servo_shoulder.write(joints[1]);
+    servo_arm1.write(joints[2]);
+    servo_arm2.write(joints[3]);
+    servo_arm3.write(joints[4]);
+    end_effector.write(joints[5]);
   }
 }
