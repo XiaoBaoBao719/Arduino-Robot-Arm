@@ -21,24 +21,24 @@ long receive;
 
 void setup() {
   // Initialize Servos to pins
-  servo_base.attach(11);
-  servo_shoulder.attach(10);
-  servo_arm1.attach(9);
-  servo_arm2.attach(6);
-  servo_arm3.attach(5);
-  end_effector.attach(3);
+  servo_base.attach(2);
+  servo_shoulder.attach(3);
+  servo_arm1.attach(4);
+  servo_arm2.attach(5);
+  servo_arm3.attach(6);
+  end_effector.attach(7);
 
   inputCtr = 0;
   //rotation smoothing test init
   rotStart = 0;
   rotEnd = 180;
   rotRate = 1; //1 degree per 100 ms
-
+  Serial.println("test1");
   //Initialize servo rotations
   for(int k = 0; k < sizeof(rotValues); k++){
     rotValues[k] = 90;
   }
-
+  Serial.println("test2");
   delay(1000);
   //Start Serial Comm
   Serial.begin(9600);
@@ -53,17 +53,18 @@ void setup() {
   delay(1000);
   servo_base.write(90);
   Serial.println("Calibration complete -------");
+  printServoMenu();
 }
 
 void loop() {
-  while (Serial.available() > 0 && inputCtr < sizeof(rotValues)) {
+  while (Serial.available() > 0) {
 
-    printServoMenu();
+    //printServoMenu();
     receive = Serial.parseInt();
     Serial.flush();
 
     if (receive != NULL) {
-      ++inputCtr;
+      //++inputCtr;
       Serial.println("Changing Servo Number: " + receive);
       /*
         try {
@@ -94,7 +95,7 @@ void loop() {
     }
   }
   //rotateServos();
-  inputCtr = 0;
+  //inputCtr = 0;
 }
 
 void rotateServos(void) {
