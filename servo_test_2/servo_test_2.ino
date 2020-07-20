@@ -14,7 +14,7 @@ String readIn, base, shoulder, joint1, joint2, joint3, effector;
 const int NUMJOINTS = 6;
 
 String jointStrThetas[NUMJOINTS] {"0", "0", "0", "0", "0", "0"};
-int jointThetas[NUMJOINTS] = {0, 0, 0, 0, 0, 0};
+int jointThetas[NUMJOINTS];
 int masterThetas[NUMJOINTS];
 bool flag;
 
@@ -71,7 +71,7 @@ void loop() {
     //Serial.println(readIn);
     //Serial.println("is this many chars long: ");
     //Serial.println(readIn.length());
-    flag = false;
+    //flag = false;
     //enters valid values into array
     for (int k = 0; k < readIn.length(); k++) {
       //Serial.println(readIn.charAt(k));
@@ -91,6 +91,8 @@ void loop() {
       //jointThetas[0] = base.toInt();
       //servo_base.write(jointThetas[0]);
     }
+    //resets counter
+    ctr = 0;
 
     Serial.println(readIn);
     //writes input string values to array
@@ -101,9 +103,11 @@ void loop() {
       //Serial.println(jointThetas[l]);
     }
 
-    //resets counter 
-    ctr = 0; 
+    //Serial.print(getInputThetas(jointThetas));
+    Serial.print(getMasterThetas());
   }
+
+
   //check to see if joint angles are not at target orientation
   //rotate servos and update master array of thetas
   if (!areJointsAtTarget(jointThetas)) {
@@ -114,8 +118,15 @@ void loop() {
       index++;
     }
   }
+  else{
+    Serial.println("Joints Already At Target---");
+    delay(1000);
+    Serial.print(getMasterThetas());
+    delay(5000);
+  }
   //reset input reading variables and Serial buffer
   readIn = "";
+  flag = false;
   Serial.flush();
 }
 
@@ -128,20 +139,43 @@ bool areJointsAtTarget(int joints[]) {
   }
   //Serial.println("joints at target");
   return true;
-
 }
 
 void rotateServos(int joints[]) {
   Serial.println("Aligning Joints---");
   //if (sizeof(joints) / sizeof(joints[0]) == NUMJOINTS) {
-    //Serial.println("TEST");
-    delay(1000);
-    servo_base.write(joints[0]);
-    servo_shoulder.write(joints[1]);
-    servo_arm1.write(joints[2]);
-    servo_arm2.write(joints[3]);
-    servo_arm3.write(joints[4]);
-    end_effector.write(joints[5]);
-    delay(500);
+  //Serial.println("TEST");
+  delay(1000);
+  servo_base.write(joints[0]);
+  servo_shoulder.write(joints[1]);
+  servo_arm1.write(joints[2]);
+  servo_arm2.write(joints[3]);
+  servo_arm3.write(joints[4]);
+  end_effector.write(joints[5]);
+  delay(500);
   //}
+}
+
+String getInputThetas(int joints[]) {
+  String thetas = "";
+  thetas += "\n--printing input list--\n";
+  for (int n = 0; sizeof(joints) / sizeof(joints[0]); n++) {
+    thetas += String(joints[n]);
+    thetas += " ";
+  }
+  thetas += "\n--Done printing--\n";
+
+  return thetas;
+}
+
+String getMasterThetas() {
+  String thetas = "";
+  thetas += "\n--printing master list--\n";
+  for (int k : masterThetas) {
+    thetas += String(k);
+    thetas += " ";
+  }
+  thetas += "\n--Done printing--\n";
+
+  return thetas;
 }
