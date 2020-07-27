@@ -13,7 +13,7 @@ Servo end_effector;
 String readIn, base, shoulder, joint1, joint2, joint3, effector;
 const int NUMJOINTS = 6;
 
-String jointStrThetas[NUMJOINTS] {"0", "0", "0", "0", "0", "0"};
+String jointStrThetas[NUMJOINTS] {"90", "90", "90", "90", "90", "90"};
 int jointThetas[NUMJOINTS];
 int masterThetas[NUMJOINTS];
 bool flag;
@@ -26,12 +26,12 @@ void setup() {
     index++;
   }
   // Initialize Servos to pins
-  servo_base.attach(8);
-  servo_shoulder.attach(9);
-  servo_arm1.attach(10);
-  servo_arm2.attach(11);
-  servo_arm3.attach(12); //MICROSERVO PIN
-  end_effector.attach(13);
+  servo_base.attach(13); //MICROSERVO PIN
+  servo_shoulder.attach(12); //MICROSERVO PIN
+  servo_arm1.attach(11);
+  servo_arm2.attach(10);
+  servo_arm3.attach(9); 
+  end_effector.attach(8);
   delay(1000);
 
   Serial.begin(9600);
