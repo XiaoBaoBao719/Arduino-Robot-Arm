@@ -14,7 +14,8 @@
 //#include <PID_v1.h>
 #include "inttypes.h"
 
-#define PI 3.14159265
+/*
+#define PI = 3.14159265
 
 #define ROBOARM_BASE 0
 #define ROBOARM_SHOULDER 1
@@ -22,6 +23,7 @@
 #define ROBOARM_JOINT4 3
 #define ROBOARM_JOINT5 4
 #define ROBOARM_GRIPPER  5
+*/
 
 class RoboArm
 {
@@ -29,7 +31,7 @@ class RoboArm
     RoboArm();
 
     void attachPins(); //called in setup
-    void update(); //call every 50ms
+    void updateArm(); //call every 50ms
 
     void setJointAngle(uint8_t, uint8_t);
     void homeAll();
