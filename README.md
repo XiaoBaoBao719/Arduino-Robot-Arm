@@ -4,4 +4,4 @@
 
 Written in C/C++.
 
-Off the shelf ML frameworks like Pytorch and YOLO utilized.
+Off the shelf ML frameworks, like Pytorch and YOLO, were used.
